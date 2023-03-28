@@ -9,8 +9,8 @@ const config = {
           "black": "#000000",
         },
         background: {
-        "primary": "#28293D",
-        "section": "#2D2F45",
+        "primary": "#2D2F45",
+        "section": "#28293D",
         "cards": "#373951",
         "cardSection": "#3E405B",
         },
