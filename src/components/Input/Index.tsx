@@ -1,7 +1,8 @@
 //Create react input component with typescript 
 import React from 'react';
 import Icon from '../Icon';
-import InputIcon from '/public/icons/input_icon.svg';
+import InputIcon from '/public/icons/input_icon.png';
+
 
 interface Props {
     type: string;
@@ -10,11 +11,11 @@ interface Props {
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Input: React.FC<Props> = ({ type, placeholder, value, onChange }) => {
+const Input: React.FC<Props> = ({ type, placeholder, value,  onChange }) => {
     return (
         <div className='border b-red'>
             {/* //TODO: Icon component */}
-            <Icon name={InputIcon}/>
+            <Icon icon={InputIcon}/>
             <input
                 className='bg-transparent text-white border-b border-mint-dark focus:mint-light/100 outline-none'
                 type={type}

@@ -1,20 +1,20 @@
 //This component is for handeling icons in the app use typescript and next/image to render the icons
 
 import React from 'react';
-import Image from 'next/image';
-import InputIcon from '/public/icons/input_icon.svg';
+import Image, { StaticImageData } from 'next/image';
+
 
 interface Props {
-    name: string;
+    icon: StaticImageData;
     size?: number;
     color?: string;
 }
 
-const Icon: React.FC<Props> = ({ name, size = 24, color = 'white' }) => {
+const Icon: React.FC<Props> = ({ icon, size = 24 }) => {
     return (
         <div className='flex row-auto'>
             <Image
-                src={InputIcon}
+                src={icon}
                 alt="Picture of the author"
                 height={size}
                 width={size}

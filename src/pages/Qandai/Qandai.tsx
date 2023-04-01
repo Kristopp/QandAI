@@ -1,13 +1,14 @@
 // Create black nextjs page with no layout
 import { useState } from "react";
-import { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from "next";
+import { NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ChangeEvent, useEffect } from "react";
-import Banner from "../../../public/images/Banner.svg";
+
+import Banner from "/public/images/Banner.png";
 import Image from 'next/image'
 import Input from "~/components/Input/Index";
+
 
 
 
@@ -18,9 +19,9 @@ const QandAi: NextPage = () => {
   //Redirect to signin page if not logged in
   useEffect(() => {
     if (!sessionData) {
-      router.push('/auth/signin ');
+      router.push('/auth/signin ').catch((err) => console.log(err));
     }
-  }, [sessionData]);
+  }, [sessionData, router]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     console.log('value' + value)
