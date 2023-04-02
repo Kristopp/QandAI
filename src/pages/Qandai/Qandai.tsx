@@ -8,6 +8,7 @@ import { ChangeEvent, useEffect } from "react";
 import Banner from "/public/images/Banner.png";
 import Image from 'next/image'
 import Input from "~/components/Input/Index";
+import MessageContainer from "~/components/Content";
 
 
 
@@ -30,7 +31,7 @@ const QandAi: NextPage = () => {
   return (
     <>
       {/* Welcome banner */}
-      <div className="b-1 b-black w-auto" >
+      <div className="b-1 b-black w-auto relative" >
         <Image
           src={Banner}
           alt="Picture of the author"
@@ -38,12 +39,15 @@ const QandAi: NextPage = () => {
         />
 
       </div>
+      {/* Sign in button */}
       <button
         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
         onClick={sessionData ? () => void signOut() : () => void signIn()}
       >
         {sessionData ? "Sign out" : "Sign in"}
       </button>
+      {/* Message content section */}
+      <MessageContainer />
       {/* Content section.Needs some brain storming (display questions and score and so on) */}
 
       {/* input section Needs some brain storming */}

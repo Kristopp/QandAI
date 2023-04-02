@@ -12,14 +12,13 @@ interface Props {
 
 const Icon: React.FC<Props> = ({ icon, size = 24 }) => {
     return (
-        <div className='flex row-auto'>
             <Image
                 src={icon}
                 alt="Picture of the author"
                 height={size}
                 width={size}
+                style={{ objectFit: 'contain' }}
             />
-        </div>
     );
 
 };
