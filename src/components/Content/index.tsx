@@ -2,9 +2,11 @@
 
 import React from 'react';
 import Message from '../Message';
+import { User } from 'next-auth';
+
 
 interface Props {
-    user: string;
+    name: string | null | undefined;
 }
 
 //This component only takes in messages and displays them 
@@ -14,11 +16,15 @@ interface Props {
 //This should be scrollable container that holds all the message 
 
 
-const Content: React.FC<Props> = ({user}) => {
+const Content: React.FC<Props> = ({name}) => {
+    //Get session user from next-auth
+
+
+
     return (
         <div className='flex flex-grow border h-200' >
             {/* user name  */}
-            <p>{user}</p>
+            <p>{name}</p>
             {/* Upvote count needs logic and DB*/}
             {/* Message needs logic and DB*/}
             <Message message='DEMO message'/>
