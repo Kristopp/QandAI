@@ -9,6 +9,7 @@ import Banner from "/public/images/Banner.png";
 import Image from 'next/image'
 import Input from "~/components/Input/Index";
 import Content from "~/components/Content";
+import ContentContainer from "~/components/ContentContainer/Index";
 
 
 const QandAi: NextPage = () => {
@@ -44,8 +45,12 @@ const QandAi: NextPage = () => {
       >
         {sessionData ? "Sign out" : "Sign in"}
       </button>
+      
       {/* Content section.Needs some brain storming (display questions and score and so on) */}
-      <Content name={ sessionData?.user.name } />
+      <ContentContainer>
+        <Content name={sessionData?.user.name} />
+      </ContentContainer>
+
 
       {/* input section Needs some brain storming */}
       <Input type={"text"} placeholder={"Ask away"} value={value} onChange={handleChange} />
