@@ -10,16 +10,27 @@ import Image from 'next/image'
 import Input from "~/components/Input/Index";
 import Content from "~/components/Content";
 import ContentContainer from "~/components/ContentContainer/Index";
+import { User } from "next-auth";
 
 
 const QandAi: NextPage = () => {
   const [value, setValue] = useState<string>("");
   const { data: sessionData } = useSession();
   const router = useRouter();
-  //Redirect to signin page if not logged in
+  const [userInformation, setUserInformation] = useState<User>({
+    name: '',
+    email: '',
+    image: '',
+    id: '',
+  });
+
+
   useEffect(() => {
     if (!sessionData) {
       router.push('/auth/signin ').catch((err) => console.log(err));
+    }
+    if (sessionData) {
+      setUserInformation(sessionData.user);
     }
   }, [sessionData, router]);
 
@@ -42,15 +53,15 @@ const QandAi: NextPage = () => {
       >
         {sessionData ? "Sign out" : "Sign in"}
       </button>
-      
+
       {/* Content section.Needs some brain storming (display questions and score and so on) */}
       <ContentContainer>
-        <Content name={sessionData?.user.name} />
+        <Content name={userInformation.name} userId={userInformation.id} />
       </ContentContainer>
 
 
       {/* input section Needs some brain storming */}
-      <Input placeholder="Ask away" type="input"  />
+      <Input placeholder="Ask away" type="input" />
       {/* Create sign button */}
     </>
   );

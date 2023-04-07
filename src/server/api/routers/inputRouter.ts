@@ -5,20 +5,38 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 
 export const inputRouter = createTRPCRouter({
+    getUsersLatestInput: protectedProcedure.input(z.object({ userId: z.string() }))
+        .query(async ({ input, ctx }) => {
+            const { userId } = input;
+            try {
+                const latestMessage = await ctx.prisma.userInput.findFirst({
+                    where: {
+                        userId: userId,
+                    },
+                });
+                return {
+                    responseMessage: "Users latest input fetched",
+                    latestMessage: latestMessage
+                };
+            } catch (error) {
+                console.log(error);
+            }
+
+        }),
     getUserInputs: protectedProcedure
         .input(z.object({ userId: z.string() }))
         .query(async ({ input, ctx }) => {
             const { userId } = input;
             try {
-                const userInput = await ctx.prisma.userInput.findMany({
+                const UsersAllMessages = await ctx.prisma.userInput.findMany({
                     where: {
                         userId: userId,
                     },
                     orderBy: { createdAt: 'desc' },
                 });
                 return {
-                    message: "User inputs fetched",
-                    userInput
+                    responseMessage: "User inputs fetched",
+                    usersAllMessage: UsersAllMessages
                 };
             } catch (error) {
                 console.log(error);
@@ -31,9 +49,6 @@ export const inputRouter = createTRPCRouter({
         .mutation(async ({ input, ctx }) => {
             const { content } = input;
             const userId = ctx.session.user.id;
-
-            console.log("content: " + content)
-            console.log("userId: " + userId)
 
             try {
                 const userInput = await ctx.prisma.userInput.create({
