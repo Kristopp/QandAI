@@ -52,6 +52,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    userInputs    UserInput[] @relation("UserToUserInput") // Add this line for the relation with UserInput
 }
 
 model VerificationToken {
@@ -61,3 +62,13 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+model UserInput {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    content   String   // The actual text input
+    userId    String   // Foreign key to the User model
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, name: "UserToUserInput")
+}
+
