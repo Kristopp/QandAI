@@ -2,24 +2,28 @@
 
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { prisma } from "~/server/db";
+
 
 export const inputRouter = createTRPCRouter({
     getUserInputs: protectedProcedure
         .input(z.object({ userId: z.string() }))
         .query(async ({ input, ctx }) => {
             const { userId } = input;
-
             try {
-                const userInputs = await prisma.userInput.findMany({
-                    where: { userId },
+                const userInput = await ctx.prisma.userInput.findMany({
+                    where: {
+                        userId: userId,
+                    },
                     orderBy: { createdAt: 'desc' },
                 });
-
-                return userInputs;
+                return {
+                    message: "User inputs fetched",
+                    userInput
+                };
             } catch (error) {
-                throw error;
+                console.log(error);
             }
+
         }),
 
     createUserInput: protectedProcedure
@@ -28,19 +32,27 @@ export const inputRouter = createTRPCRouter({
             const { content } = input;
             const userId = ctx.session.user.id;
 
+            console.log("content: " + content)
+            console.log("userId: " + userId)
+
             try {
-                const userInput = await prisma.userInput.create({
+                const userInput = await ctx.prisma.userInput.create({
                     data: {
                         content,
-                        user: {
-                            connect: { id: userId },
-                        },
+                        userId,
                     },
+                }).catch((error) => {
+                    console.log(error);
+                }).then((data) => {
+                    console.log('data', data);
                 });
-
-                return userInput;
-            } catch (error) {
-                throw error;
+                return {
+                    message: "User input created",
+                    userInput
+                };
+            }
+            catch (error) {
+                console.log(error);
             }
         }),
 });

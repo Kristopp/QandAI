@@ -23,10 +23,7 @@ const QandAi: NextPage = () => {
     }
   }, [sessionData, router]);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log('value' + value)
-    setValue(event.target.value);
-  };
+
   return (
     <>
       {/* Welcome banner */}
@@ -53,7 +50,7 @@ const QandAi: NextPage = () => {
 
 
       {/* input section Needs some brain storming */}
-      <Input type={"text"} placeholder={"Ask away"} value={value} onChange={handleChange} />
+      <Input placeholder="Ask away" type="input"  />
       {/* Create sign button */}
     </>
   );
