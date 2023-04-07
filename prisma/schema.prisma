@@ -34,6 +34,7 @@ model Account {
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+    @@index([userId])
 }
 
 model Session {
@@ -42,6 +43,8 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId], name: "userId")
 }
 
 model User {
@@ -70,5 +73,7 @@ model UserInput {
     content   String   // The actual text input
     userId    String   // Foreign key to the User model
     user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, name: "UserToUserInput")
+
+    @@unique([userId, content])
 }
 
