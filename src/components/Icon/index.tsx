@@ -6,19 +6,20 @@ import Image, { StaticImageData } from 'next/image';
 
 interface Props {
     icon: StaticImageData;
-    size?: number;
+    size?: '16' |'24px' ;
     color?: string;
 }
 
-const Icon: React.FC<Props> = ({ icon, size = 24 }) => {
+const Icon: React.FC<Props> = ({ icon, size }) => {
     return (
+        <div className={`h-[24px] w-[24px] relative`}>
             <Image
                 src={icon}
                 alt="Picture of the author"
-                height={size}
-                width={size}
-                style={{ objectFit: 'contain' }}
+                fill
             />
+
+        </div>
     );
 
 };
