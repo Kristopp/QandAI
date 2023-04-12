@@ -13,6 +13,8 @@ export const inputRouter = createTRPCRouter({
                     where: {
                         userId: userId,
                     },
+                    orderBy: { createdAt: 'desc' },
+                    take: 1,
                 });
                 return {
                     responseMessage: "Users latest input fetched",

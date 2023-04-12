@@ -2,9 +2,7 @@ import React, { useEffect } from 'react';
 import Message from '../Message';
 import Icon from '../Icon';
 import userDefault from '/public/icons/user_default.png';
-import { useRouter } from "next/router";
 import { RouterInputs, RouterOutputs, api } from '~/utils/api';
-import { UseTRPCQueryResult } from '@trpc/react-query/shared';
 
 interface Props {
     name: string | undefined | null;
@@ -22,9 +20,6 @@ const Content: React.FC<Props> = ({ name, userId }) => {
 
     const { data } = api.inputHandler.getUsersLatestInput.useQuery({ userId: userId });
 
-    console.log('getAllMessages', data?.latestMessage)
-
-
     return (
         <div className='flex flex-grow border max-h-[160px] md:w-[800px] text-white'>
             {/* user name  */}
@@ -32,7 +27,8 @@ const Content: React.FC<Props> = ({ name, userId }) => {
             <p>{name}</p>
             {/* Upvote count needs logic and DB*/}
             {/* Message needs logic and DB*/}
-            <Message message='DEMO message' />
+            {/* TODO: add loading component here */}
+            {data?.latestMessage?.content && <Message message={data.latestMessage.content} />}
         </div>
     );
 };
