@@ -8,7 +8,7 @@ interface Props {
 
 const ContentContainer: React.FC<Props> = ({ children }) => {
     return (
-        <div className='flex flex-col flex-grow items-center border f-full w-full'>
+        <div className='flex flex-col flex-grow items-center f-full w-full'>
             {children}
         </div>
     );

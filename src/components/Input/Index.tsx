@@ -1,5 +1,5 @@
 //Create react input component with typescript 
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { RouterInputs, RouterOutputs, api } from '~/utils/api';
 import Icon from '../Icon';
 import InputIcon from '/public/icons/input_icon.png';
@@ -19,25 +19,25 @@ const Input: React.FC<Props> = ({ type, placeholder }) => {
     const [content, setInput] = useState<{ content: string }>({ content: '' });
 
     //User id is passed in the backend
-    const createUserInput = api.inputHandler.createUserInput.useMutation();
-
-    console.log('userInput', createUserInput)
+    const createUserInput = api.postHandler.createUserInput.useMutation();
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setInput({ content: event.target.value });
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         console.log('test', content)
-        await createUserInput.mutateAsync(content);
+        await createUserInput.mutateAsync(content).then((res) => {
+            console.log('res', res);
         setInput({ content: '' });
+    });
     };
     return (
-        <div className='flex sticky items-end inset-x-0 bottom-0 py-1 min-h-[100px]'>
+        <div className='flex sticky items-end inset-x-0 bottom-0 py-1 w-full px-4'>
             <div className='bottom-0'>
                 <Icon icon={InputIcon} />
             </div>
-            <form className='className="w-full flex items-end' onSubmit={handleSubmit}>
+            <form className='w-full flex items-end' onSubmit={handleSubmit}>
                 <input
                     className='w-full mx-2 bg-transparent text-white border-b border-mint-dark focus:mint-light/100 outline-none'
                     type={type}

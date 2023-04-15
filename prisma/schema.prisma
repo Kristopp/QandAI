@@ -55,7 +55,8 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  userInputs    UserInput[] @relation("userInput") // Add this line for the relation with UserInput
+  userPost      UserPost[]  @relation("userPost") // Add this line for the relation with UserPost
+  voteCounts    VoteCount[] @relation("userVote") // Add this line for the relation with VoteCount
 }
 
 model VerificationToken {
@@ -66,13 +67,27 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model UserInput {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model UserPost {
+  id        String      @id @default(cuid())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
   content   String // The actual text input
   userId    String // Foreign key to the User model
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, name: "userInput")
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade, name: "userPost")
+  votes     VoteCount[] @relation("postVote") // Add this line for the relation with Vote
 
   @@unique([userId, content])
+}
+
+model VoteCount {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     String
+  userPostId String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade, name: "userVote")
+  userPost   UserPost @relation(fields: [userPostId], references: [id], onDelete: Cascade, name: "postVote")
+
+  @@unique([userId, userPostId])
+  @@index([userPostId])
 }
