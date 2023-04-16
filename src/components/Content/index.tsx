@@ -2,12 +2,8 @@ import React, { useEffect, ButtonHTMLAttributes } from 'react';
 import Message from '../Message';
 import Icon from '../Icon';
 import userDefault from '/public/icons/user_default.png';
-import { api } from '~/utils/api';
 
-interface Props {
-    name: string | undefined | null;
-    userId: string;
-}
+
 //THIS COMPONENT NEEDS ALL USER INPUTS FROM DATABASE AND DISPLAY THEM
 
 //This component only takes in messages and displays them 
@@ -16,12 +12,17 @@ interface Props {
 
 //Maybe add Colapse feature for better reading other comments
 
+interface Props {
+    postId: string;
+    userId: string;
+    createdAt: Date;
+    content: string;
+    voteCount: number;
+}
 
-const Content: React.FC<Props> = ({ name, userId }) => {
-    //Use TRPC inputRouters getUser to fetch messages from database
-    const { data: allPosts, error, isLoading } = api.postHandler.getAllUsersPosts.useQuery();
 
-    console.log('allPosts', allPosts)
+const Content: React.FC<Props> = ({postId, userId,  createdAt, content, voteCount  }) => {
+ 
     //Create a upvote button onClick handler that calls the upvote mutation
     const handleUpvote = async (e: ButtonHTMLAttributes<HTMLButtonElement>) => {
        

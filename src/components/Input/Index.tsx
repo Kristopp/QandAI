@@ -1,9 +1,8 @@
 //Create react input component with typescript 
 import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { RouterInputs, RouterOutputs, api } from '~/utils/api';
+import { api } from '~/utils/api';
 import Icon from '../Icon';
 import InputIcon from '/public/icons/input_icon.png';
-import { UseTRPCMutationResult } from '@trpc/react-query/shared';
 
 
 interface Props {

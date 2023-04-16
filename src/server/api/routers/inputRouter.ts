@@ -3,6 +3,22 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
+export interface UserPostWithVoteCount {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    content: string;
+    userId: string;
+    _count: {
+        votes: number;
+    };
+}
+
+export interface GetAllUsersPostsResponse {
+    responseMessage: string;
+    usersAllMessage: UserPostWithVoteCount[];
+}
+
 
 export const postRouter = createTRPCRouter({
     getUsersLatestInput: protectedProcedure.input(z.object({ userId: z.string() }))
@@ -28,30 +44,34 @@ export const postRouter = createTRPCRouter({
 
         }),
 
-    getAllUsersPosts: protectedProcedure
-    .query(async ({ ctx }) => {
-        try {
-          const UsersAllMessages = await ctx.prisma.userPost.findMany({
-            orderBy: { votes: { _count: 'desc' } }, // Order by votes count
-            include: {
-              _count: {
-                select: { votes: true },
+        getAllUsersPosts: protectedProcedure
+        .query(async ({ ctx }): Promise<GetAllUsersPostsResponse> => {
+          try {
+            const UsersAllMessages: UserPostWithVoteCount[] = await ctx.prisma.userPost.findMany({
+              orderBy: { votes: { _count: 'desc' } }, // Order by votes count
+              include: {
+                _count: {
+                  select: { votes: true },
+                },
               },
-            },
-          });
-          return {
-            responseMessage: "All user inputs fetched",
-            usersAllMessage: UsersAllMessages
-          };
-        } catch (error) {
-          console.log(error);
-        }
-      }),
+            });
+            return {
+              responseMessage: "All user inputs fetched",
+              usersAllMessage: UsersAllMessages
+            };
+          } catch (error) {
+            return {
+                responseMessage: "Error fetching user inputs",
+                usersAllMessage: [],
+              };
+          }
+        }),
+      
     createUserInput: protectedProcedure
         .input(z.object({ content: z.string() }))
         .mutation(async ({ input, ctx }) => {
             const { content } = input;
-            const userId = '5678'
+            const userId = ctx.session.user.id;
 
             console.log('userId', userId, input)
 

@@ -10,27 +10,32 @@ import Image from 'next/image'
 import Input from "~/components/Input/Index";
 import Content from "~/components/Content";
 import ContentContainer from "~/components/ContentContainer/Index";
-import { User } from "next-auth";
+import { RouterOutputs, api } from "~/utils/api";
+import { UseTRPCQueryResult } from "@trpc/react-query/shared";
+import { UserPostWithVoteCount } from "~/server/api/routers/inputRouter";
+
+ export interface UserPost  {
+  id: string
+  userId: string
+  createdAt: Date
+  updatedAt?: Date
+  content: string
+  voteCount: number
+}
+
 
 
 const QandAi: NextPage = () => {
-  const [value, setValue] = useState<string>("");
+  //Use TRPC inputRouters getUser to fetch messages from database
+  const { data: allPosts } = api.postHandler.getAllUsersPosts.useQuery();
+
+  console.log('allPosts', allPosts)
   const { data: sessionData } = useSession();
   const router = useRouter();
-  const [userInformation, setUserInformation] = useState<User>({
-    name: '',
-    email: '',
-    image: '',
-    id: '',
-  });
-
 
   useEffect(() => {
     if (!sessionData) {
       router.push('/auth/signin ').catch((err) => console.log(err));
-    }
-    if (sessionData) {
-      setUserInformation(sessionData.user);
     }
   }, [sessionData, router]);
 
@@ -56,7 +61,20 @@ const QandAi: NextPage = () => {
 
       {/* Content section.Needs some brain storming (display questions and score and so on) */}
       <ContentContainer>
-        <Content name={userInformation.name} userId={userInformation.id} />
+        {allPosts?.usersAllMessage.map((post: UserPostWithVoteCount) => (
+          console.log('post', post),
+          <Content
+            key={post.id}
+            userId={post.userId}
+            postId={post.id}
+            content={post.content}
+            voteCount={post._count.votes}
+            createdAt={post.createdAt}
+
+          />
+        ))}
+
+
       </ContentContainer>
 
 
