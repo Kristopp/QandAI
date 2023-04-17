@@ -5,6 +5,9 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export interface UserPostWithVoteCount {
     id: string;
+    user: {
+        name: string;
+    };
     createdAt: Date;
     updatedAt: Date;
     content: string;
@@ -46,27 +49,55 @@ export const postRouter = createTRPCRouter({
 
         getAllUsersPosts: protectedProcedure
         .query(async ({ ctx }): Promise<GetAllUsersPostsResponse> => {
-          try {
-            const UsersAllMessages: UserPostWithVoteCount[] = await ctx.prisma.userPost.findMany({
-              orderBy: { votes: { _count: 'desc' } }, // Order by votes count
-              include: {
-                _count: {
-                  select: { votes: true },
-                },
-              },
-            });
-            return {
-              responseMessage: "All user inputs fetched",
-              usersAllMessage: UsersAllMessages
-            };
-          } catch (error) {
-            return {
-                responseMessage: "Error fetching user inputs",
-                usersAllMessage: [],
-              };
-          }
+            try {
+                const usersAllMessages: UserPostWithVoteCount[] = await ctx.prisma.userPost.findMany({
+                    where: {
+                        user: {
+                            name: {
+                                not: undefined // Filter out users with no name
+                            },
+                        },
+                    },
+                    orderBy: { votes: { _count: 'desc' } }, // Order by votes count
+                    include: {
+                        user: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                        _count: {
+                            select: { votes: true },
+                        },
+                    },
+                });
+    
+                console.log('usersAllMessages', usersAllMessages);
+    
+                const usersAllMessagesWithVoteCount: UserPostWithVoteCount[] = usersAllMessages.map((post) => ({
+                    id: post.id,
+                    user: {
+                        name: post.user.name,
+                    },
+                    createdAt: post.createdAt,
+                    updatedAt: post.updatedAt,
+                    content: post.content,
+                    userId: post.userId,
+                    _count: post._count,
+                }));
+    
+                return {
+                    responseMessage: "All user inputs fetched",
+                    usersAllMessage: usersAllMessagesWithVoteCount
+                };
+            } catch (error) {
+                return {
+                    responseMessage: "Error fetching user inputs",
+                    usersAllMessage: [],
+                };
+            }
         }),
-      
+    
+
     createUserInput: protectedProcedure
         .input(z.object({ content: z.string() }))
         .mutation(async ({ input, ctx }) => {
@@ -81,7 +112,15 @@ export const postRouter = createTRPCRouter({
                         content: content,
                         userId: userId,
                     },
+                    include: {
+                        user: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                    },
                 });
+                console.log('userInput', userInput);
                 return {
                     message: "User input created",
                     userInput
