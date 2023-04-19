@@ -26,7 +26,7 @@ const Content: React.FC<Props> = ({postId, name, userId,  createdAt, content, vo
  
     //Create a upvote button onClick handler that calls the upvote mutation
     const handleUpvote = async (e: ButtonHTMLAttributes<HTMLButtonElement>) => {
-       
+       console.log('empty')
     };
 
 
