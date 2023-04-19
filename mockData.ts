@@ -1,4 +1,5 @@
 import type { UserPostWithVoteCount } from "~/server/api/routers/inputRouter";
+import { faker } from '@faker-js/faker';
 
 export const mockPostData: UserPostWithVoteCount[] = [
     {
@@ -8,7 +9,7 @@ export const mockPostData: UserPostWithVoteCount[] = [
       },
       createdAt: new Date(),
       updatedAt: new Date(),
-      content: 'This is a mock post from Alice',
+      content: faker.lorem.paragraphs(3),
       userId: '1',
       _count: {
         votes: 5,
@@ -34,7 +35,7 @@ export const mockPostData: UserPostWithVoteCount[] = [
       },
       createdAt: new Date(),
       updatedAt: new Date(),
-      content: 'This is a mock post from Charlie',
+      content: faker.lorem.paragraphs(2),
       userId: '3',
       _count: {
         votes: 7,
@@ -47,7 +48,7 @@ export const mockPostData: UserPostWithVoteCount[] = [
       },
       createdAt: new Date(),
       updatedAt: new Date(),
-      content: 'This is a mock post from David',
+      content: faker.lorem.paragraphs(1),
       userId: '4',
       _count: {
         votes: 1,
@@ -60,7 +61,7 @@ export const mockPostData: UserPostWithVoteCount[] = [
       },
       createdAt: new Date(),
       updatedAt: new Date(),
-      content: 'This is a mock post from Eva',
+      content: faker.lorem.paragraphs(2),
       userId: '5',
       _count: {
         votes: 4,
@@ -86,7 +87,7 @@ export const mockPostData: UserPostWithVoteCount[] = [
         },
         createdAt: new Date(),
         updatedAt: new Date(),
-        content: 'This is a mock post from Grace',
+        content: faker.lorem.paragraphs(5),
         userId: '7',
         _count: {
           votes: 8,
@@ -99,7 +100,7 @@ export const mockPostData: UserPostWithVoteCount[] = [
         },
         createdAt: new Date(),
         updatedAt: new Date(),
-        content: 'This is a mock post from Henry',
+        content: faker.lorem.paragraphs(2),
         userId: '8',
         _count: {
           votes: 6,
@@ -112,7 +113,7 @@ export const mockPostData: UserPostWithVoteCount[] = [
         },
         createdAt: new Date(),
         updatedAt: new Date(),
-        content: 'This is a mock post from Iris',
+        content: faker.lorem.paragraphs(3),
         userId: '9',
         _count: {
           votes: 10,

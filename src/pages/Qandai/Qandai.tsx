@@ -27,10 +27,8 @@ import { mockPostData } from '../../../mockData'
 
 const QandAi: NextPage = () => {
   //Use TRPC inputRouters getUser to fetch messages from database
-  const { data: allPosts } = api.postHandler.getAllUsersPosts.useQuery();
+  // const { data: allPosts } = api.postHandler.getAllUsersPosts.useQuery();
   
-
-  console.log('allPosts', allPosts)
   const { data: sessionData } = useSession();
   const router = useRouter();
 
