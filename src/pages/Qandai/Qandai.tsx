@@ -1,19 +1,19 @@
 // Create black nextjs page with no layout
-import { useState } from "react";
 import { NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { ChangeEvent, useEffect } from "react";
+import {  useEffect } from "react";
 
 import Banner from "/public/images/Banner.png";
 import Image from 'next/image'
 import Input from "~/components/Input/Index";
 import Content from "~/components/Content";
 import ContentContainer from "~/components/ContentContainer/Index";
-import { RouterOutputs, api } from "~/utils/api";
-import { UseTRPCQueryResult } from "@trpc/react-query/shared";
+import { api } from "~/utils/api";
 import { UserPostWithVoteCount } from "~/server/api/routers/inputRouter";
 
+//mock
+import { mockPostData } from '../../../mockData'
  export interface UserPost  {
   id: string
   userId: string
@@ -28,6 +28,7 @@ import { UserPostWithVoteCount } from "~/server/api/routers/inputRouter";
 const QandAi: NextPage = () => {
   //Use TRPC inputRouters getUser to fetch messages from database
   const { data: allPosts } = api.postHandler.getAllUsersPosts.useQuery();
+  
 
   console.log('allPosts', allPosts)
   const { data: sessionData } = useSession();
@@ -61,11 +62,11 @@ const QandAi: NextPage = () => {
 
       {/* Content section.Needs some brain storming (display questions and score and so on) */}
       <ContentContainer>
-        {allPosts?.usersAllMessage.map((post: UserPostWithVoteCount) => (
-          console.log('post', post),
+        {mockPostData?.map((post: UserPostWithVoteCount) => (
           <Content
             key={post.id}
             userId={post.userId}
+            name={post.user.name}
             postId={post.id}
             content={post.content}
             voteCount={post._count.votes}

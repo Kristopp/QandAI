@@ -14,6 +14,7 @@ import userDefault from '/public/icons/user_default.png';
 
 interface Props {
     postId: string;
+    name: string;
     userId: string;
     createdAt: Date;
     content: string;
@@ -21,7 +22,7 @@ interface Props {
 }
 
 
-const Content: React.FC<Props> = ({postId, userId,  createdAt, content, voteCount  }) => {
+const Content: React.FC<Props> = ({postId, name, userId,  createdAt, content, voteCount  }) => {
  
     //Create a upvote button onClick handler that calls the upvote mutation
     const handleUpvote = async (e: ButtonHTMLAttributes<HTMLButtonElement>) => {
@@ -34,7 +35,9 @@ const Content: React.FC<Props> = ({postId, userId,  createdAt, content, voteCoun
             {/* user name  */}
             <Icon icon={userDefault} size={'24px'} />
             <p>{name}</p>
+            <span>{content}</span>
             {/* Upvote count needs logic and DB*/}
+            <p>{voteCount}</p>
             {/* Message needs logic and DB*/}
             {/* TODO: add loading component here */}
            

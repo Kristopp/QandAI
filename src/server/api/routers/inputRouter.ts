@@ -68,10 +68,11 @@ export const postRouter = createTRPCRouter({
                         _count: {
                             select: { votes: true },
                         },
+                        //Todo: modify it to get the one post only 
+                        
                     },
                 });
     
-                console.log('usersAllMessages', usersAllMessages);
     
                 const usersAllMessagesWithVoteCount: UserPostWithVoteCount[] = usersAllMessages.map((post) => ({
                     id: post.id,
