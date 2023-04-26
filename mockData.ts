@@ -12,7 +12,7 @@ export const mockPostData: UserPostWithVoteCount[] = [
       content: faker.lorem.paragraphs(3),
       userId: '1',
       _count: {
-        votes: 5,
+        votes: 567,
       },
     },
     {
@@ -38,7 +38,7 @@ export const mockPostData: UserPostWithVoteCount[] = [
       content: faker.lorem.paragraphs(2),
       userId: '3',
       _count: {
-        votes: 7,
+        votes: 1,
       },
     },
     {
@@ -64,7 +64,7 @@ export const mockPostData: UserPostWithVoteCount[] = [
       content: faker.lorem.paragraphs(2),
       userId: '5',
       _count: {
-        votes: 4,
+        votes: 43,
       },
     },
     {
@@ -77,7 +77,7 @@ export const mockPostData: UserPostWithVoteCount[] = [
       content: 'This is a mock post from Frank',
       userId: '6',
       _count: {
-        votes: 2,
+        votes: 24,
       },
     },
     {
@@ -90,7 +90,7 @@ export const mockPostData: UserPostWithVoteCount[] = [
         content: faker.lorem.paragraphs(5),
         userId: '7',
         _count: {
-          votes: 8,
+          votes: 81,
         },
       },
       {
@@ -103,7 +103,7 @@ export const mockPostData: UserPostWithVoteCount[] = [
         content: faker.lorem.paragraphs(2),
         userId: '8',
         _count: {
-          votes: 6,
+          votes: 600,
         },
       },
       {
@@ -116,7 +116,7 @@ export const mockPostData: UserPostWithVoteCount[] = [
         content: faker.lorem.paragraphs(3),
         userId: '9',
         _count: {
-          votes: 10,
+          votes: 101,
         },
       },
       {
@@ -126,10 +126,10 @@ export const mockPostData: UserPostWithVoteCount[] = [
         },
         createdAt: new Date(),
         updatedAt: new Date(),
-        content: 'This is a mock post from Jack',
+        content: faker.lorem.paragraphs(3),
         userId: '10',
         _count: {
-          votes: 2,
+          votes: 233,
         },
       },
       {
@@ -139,7 +139,7 @@ export const mockPostData: UserPostWithVoteCount[] = [
         },
         createdAt: new Date(),
         updatedAt: new Date(),
-        content: 'This is a mock post from Kate',
+        content: faker.lorem.paragraphs(1),
         userId: '11',
         _count: {
           votes: 5,
@@ -152,10 +152,10 @@ export const mockPostData: UserPostWithVoteCount[] = [
         },
         createdAt: new Date(),
         updatedAt: new Date(),
-        content: 'This is a mock post from Luke',
+        content: faker.lorem.paragraphs(2),
         userId: '12',
         _count: {
-          votes: 9,
+          votes: 90,
         },
       },
   ];

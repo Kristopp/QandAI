@@ -2,7 +2,7 @@
 import { NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import {  useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Banner from "/public/images/Banner.png";
 import Image from 'next/image'
@@ -14,7 +14,7 @@ import { UserPostWithVoteCount } from "~/server/api/routers/inputRouter";
 
 //mock
 import { mockPostData } from '../../../mockData'
- export interface UserPost  {
+export interface UserPost {
   id: string
   userId: string
   createdAt: Date
@@ -28,9 +28,17 @@ import { mockPostData } from '../../../mockData'
 const QandAi: NextPage = () => {
   //Use TRPC inputRouters getUser to fetch messages from database
   // const { data: allPosts } = api.postHandler.getAllUsersPosts.useQuery();
-  
+
   const { data: sessionData } = useSession();
   const router = useRouter();
+
+  //Create a use effect for loading mock data before rendering to fix hydration error
+
+ const [domLoaded, setDomLoaded] = useState(false);
+
+  useEffect(() => {
+    setDomLoaded(true);
+  }, []);
 
   useEffect(() => {
     if (!sessionData) {
@@ -60,7 +68,7 @@ const QandAi: NextPage = () => {
 
       {/* Content section.Needs some brain storming (display questions and score and so on) */}
       <ContentContainer>
-        {mockPostData?.map((post: UserPostWithVoteCount) => (
+        {domLoaded && mockPostData?.map((post: UserPostWithVoteCount) => (
           <Content
             key={post.id}
             userId={post.userId}
@@ -83,5 +91,7 @@ const QandAi: NextPage = () => {
     </>
   );
 };
+
+
 
 export default QandAi;
