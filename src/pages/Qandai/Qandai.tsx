@@ -1,33 +1,52 @@
 // Create black nextjs page with no layout
-import { useState } from "react";
 import { NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { ChangeEvent, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Banner from "/public/images/Banner.png";
 import Image from 'next/image'
 import Input from "~/components/Input/Index";
-import MessageContainer from "~/components/Content";
+import Content from "~/components/Content";
+import ContentContainer from "~/components/ContentContainer/Index";
+import { api } from "~/utils/api";
+import { UserPostWithVoteCount } from "~/server/api/routers/inputRouter";
 
+//mock
+import { mockPostData } from '../../../mockData'
+export interface UserPost {
+  id: string
+  userId: string
+  createdAt: Date
+  updatedAt?: Date
+  content: string
+  voteCount: number
+}
 
 
 
 const QandAi: NextPage = () => {
-  const [value, setValue] = useState<string>("");
+  //Use TRPC inputRouters getUser to fetch messages from database
+  // const { data: allPosts } = api.postHandler.getAllUsersPosts.useQuery();
+
   const { data: sessionData } = useSession();
   const router = useRouter();
-  //Redirect to signin page if not logged in
+
+  //Create a use effect for loading mock data before rendering to fix hydration error
+
+ const [domLoaded, setDomLoaded] = useState(false);
+
+  useEffect(() => {
+    setDomLoaded(true);
+  }, []);
+
   useEffect(() => {
     if (!sessionData) {
       router.push('/auth/signin ').catch((err) => console.log(err));
     }
   }, [sessionData, router]);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log('value' + value)
-    setValue(event.target.value);
-  };
+
   return (
     <>
       {/* Welcome banner */}
@@ -46,15 +65,33 @@ const QandAi: NextPage = () => {
       >
         {sessionData ? "Sign out" : "Sign in"}
       </button>
-      {/* Message content section */}
-      <MessageContainer />
+
       {/* Content section.Needs some brain storming (display questions and score and so on) */}
+      <ContentContainer>
+        {domLoaded && mockPostData?.map((post: UserPostWithVoteCount) => (
+          <Content
+            key={post.id}
+            userId={post.userId}
+            name={post.user.name}
+            postId={post.id}
+            content={post.content}
+            voteCount={post._count.votes}
+            createdAt={post.createdAt}
+
+          />
+        ))}
+
+
+      </ContentContainer>
+
 
       {/* input section Needs some brain storming */}
-      <Input type={"text"} placeholder={"Ask away"} value={value} onChange={handleChange} />
+      <Input placeholder="Ask away" type="input" />
       {/* Create sign button */}
     </>
   );
 };
+
+
 
 export default QandAi;
