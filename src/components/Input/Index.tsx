@@ -25,7 +25,7 @@ const Input: React.FC<Props> = ({ type, placeholder }) => {
         setInput({ content: event.target.value });
     };
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         console.log('test', content)
         await createUserInput.mutateAsync(content).then((res) => {
             console.log('res', res);

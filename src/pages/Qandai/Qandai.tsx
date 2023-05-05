@@ -9,11 +9,11 @@ import Image from 'next/image'
 import Input from "~/components/Input/Index";
 import Content from "~/components/Content";
 import ContentContainer from "~/components/ContentContainer/Index";
-import { api } from "~/utils/api";
 import { UserPostWithVoteCount } from "~/server/api/routers/inputRouter";
 
 //mock
 import { mockPostData } from '../../../mockData'
+import { api } from "~/utils/api";
 export interface UserPost {
   id: string
   userId: string
@@ -27,14 +27,16 @@ export interface UserPost {
 
 const QandAi: NextPage = () => {
   //Use TRPC inputRouters getUser to fetch messages from database
-  // const { data: allPosts } = api.postHandler.getAllUsersPosts.useQuery();
+  const { data: allPosts } = api.postHandler.getAllUsersPosts.useQuery();
+
+  console.log(allPosts?.usersAllMessage[0]);
 
   const { data: sessionData } = useSession();
   const router = useRouter();
 
   //Create a use effect for loading mock data before rendering to fix hydration error
 
- const [domLoaded, setDomLoaded] = useState(false);
+  const [domLoaded, setDomLoaded] = useState(false);
 
   useEffect(() => {
     setDomLoaded(true);
@@ -68,7 +70,9 @@ const QandAi: NextPage = () => {
 
       {/* Content section.Needs some brain storming (display questions and score and so on) */}
       <ContentContainer>
-        {domLoaded && mockPostData?.map((post: UserPostWithVoteCount) => (
+        {/* I AM USINING MOCK data */}
+        {domLoaded && allPosts?.usersAllMessage.map((post: UserPostWithVoteCount) => (
+
           <Content
             key={post.id}
             userId={post.userId}

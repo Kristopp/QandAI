@@ -26,6 +26,8 @@ interface Props {
 
 const Content: React.FC<Props> = ({ postId, name, userId, createdAt, content, voteCount }) => {
 
+    console.log('post id', postId)
+
     return (
         <div className='flex flex-grow flex-col min-h-[160px] w-full md: max-w-[860px] text-white my-3'>
             <div className='flex flex-row items-center justify-start my-2'>

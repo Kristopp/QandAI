@@ -134,16 +134,16 @@ export const postRouter = createTRPCRouter({
     //Create and endpoint to vote for a user input and return the updated vote count
 
     voteForUserPost: protectedProcedure
-        .input(z.object({ userInputId: z.string() }))
+        .input(z.object({ postId: z.string() }))
         .mutation(async ({ input, ctx }) => {
-            const { userInputId } = input;
+            const { postId } = input;
             const userId = ctx.session.user.id;
-            console.log('userId', userId)
+            console.log('userId inside endpoint', userId ,postId)
 
             try {
                 const userInput = await ctx.prisma.userPost.update({
                     where: {
-                        id: userInputId,
+                        id: postId,
                     },
                     data: {
                         votes: {

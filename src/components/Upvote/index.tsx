@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { ButtonHTMLAttributes } from "react";
 import Icon from "../Icon";
 import upvoteIcon from "/public/icons/upvoteIcon.png";
+import { api } from "~/utils/api";
 
 
 interface Props {
@@ -15,20 +16,29 @@ const Upvote: React.FC<Props> = ({ postId, userId }) => {
   const { data: sessionData } = useSession();
   const router = useRouter();
 
-  //Todo create a logic for upvote in the backend
+  const upvote = api.postHandler.voteForUserPost.useMutation();
 
-//   const handleUpvote = async (e: ButtonHTMLAttributes<HTMLButtonElement>) => {
-//     if (!sessionData) {
-//       router.push('/auth/signin').catch((err: unknown) => console.log(err));
-//     } else {
-//       await upvote({ postId, userId });
-//     }
-//   };
+  //Todo: Add a check if user has already voted
+
+  const handleVote = async () => {
+    if (!sessionData) {
+      router.push('/auth/signin').catch((err: unknown) => console.log(err));
+    } else {
+      try {
+        console.log('FE post id', postId)
+        await upvote.mutateAsync({
+           postId: 'clgi5c3k300015dqk1sc0a7v3',
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
 
   return (
     <button
       type="button"
-    //   onClick={(e) => handleUpvote(e)}
+       onClick={handleVote}
         className="flex flex-row items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20"
     >
         <Icon icon={upvoteIcon} size={'24px'} />
